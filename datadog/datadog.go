@@ -14,7 +14,7 @@ import (
 
 func main() {
 
-	CheckDatadogMonitor("130430900")
+	CheckDatadogMonitor("132929230")
 
 }
 
@@ -41,7 +41,14 @@ func CheckDatadogMonitor(MonitorOutput string) {
 	formatted_string := response["options"].(map[string]interface{})["thresholds"].(map[string]interface{})["critical"]
 	str := fmt.Sprintf("%v", formatted_string)
 	parsed_critical_value := strings.Trim(strings.TrimPrefix(strings.TrimSuffix(str, "%"), "%!s(float64="), "=")
+	var converted_critical_value int64
+	parsedFloat, _ := strconv.ParseFloat(parsed_critical_value, 64)
+	parsedFloat = parsedFloat * 100
+	converted_critical_value = int64(parsedFloat)
+	fmt.Print(converted_critical_value)
 
-	fmt.Fprintf(os.Stdout, "parsed_critical_value: %s\n", parsed_critical_value)
+	// float, _ := strconv.ParseFloat(str, 64)
+	// fmt.Print(float * 100)
+	// fmt.Fprintf(os.Stdout, "parsed_critical_value: %s\n", parsed_critical_value)
 
 }
